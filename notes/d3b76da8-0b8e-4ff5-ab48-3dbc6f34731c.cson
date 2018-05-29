@@ -1,0 +1,56 @@
+createdAt: "2018-05-27T11:50:22.625Z"
+updatedAt: "2018-05-29T15:45:12.138Z"
+type: "MARKDOWN_NOTE"
+folder: "00ed0e13ebc5e5a7e218"
+title: "Find dirstro of $\\hat{\\mu}$"
+content: '''
+  # Find dirstro of $\\hat{\\mu}$
+  
+  ## Starting from minimizing the likelihood
+  In case the likelihood has the following form, note no nuissance parameters:
+  $$
+  \\mathscr{L} = Poiss(N_{obs} |  \\mu + N_b) \\cdot \\prod_{i}^{N_{obs}} \\frac{\\mu f_s(i) + N_b f_b(i)}{\\mu + N_b}
+  $$
+  Then we can actually find its maximum analytically by, as usual, its derivative wrt $\\mu$, $\\partial \\mathscr{L}$.
+  $$
+  \\partial \\mathscr{L} = e^{-\\mu -N_b} \\cdot \\bigg[ \\frac{(\\mu + N_b)^{N_{obs} - 1}) \\cdot(N_{obs} - \\mu - N_b)} {N_{obs}!} \\cdot \\prod().. + \\frac{(\\mu + N_b)^{N_{obs}}}{N_{obs}!}  \\sum_i^{N_{obs}} \\big(\\frac{(f_s -f_b)N_b}{(\\mu + N_b)^2} \\cdot \\prod_{j!=i}^{N_{obs}} \\frac{\\mu f_s(j) +N_b f_b(j)}{\\mu + N_b}  \\big) \\bigg] = 0.
+  $$
+  Now simplify dividing by: $\\prod_i$ ; $N_{obs}!$ ; $(\\mu +N_b)^{N_{obs} -1}$ and  what's left is:
+  
+  $$
+  N_{obs} - \\mu - N_b + \\sum_i^{N_{obs}} \\frac{\\big( f_s - f_b \\big)N_b}{\\mu f_s +N_b f_b} = 0.
+  $$
+  
+  #### Checks on the formula above
+  Is the formula correct? Checks on the minimum (zeros of formula) VS minimum of LLR has been done for toy MC produced with SR1 "final" april_v2 models.
+  The toys for the chack have:
+  - $\\mu_{true}$ = 0.5 events
+  - Generation = 1
+  - Volume (likelihood type) = 0
+  - Location usual: **"../build/RESULTS/GENtrees/apr_ER2_RG2_W2_M50_mu5\\*"**
+  
+  ![](/home/pan/work/XEPHYR_PKG/low_rate_asym/images/formula_test_example.png =350x) ![](/home/pan/work/XEPHYR_PKG/low_rate_asym/images/llr_scan_formula_test_example.png =350x)
+  ![](/home/pan/work/XEPHYR_PKG/low_rate_asym/images/formula_test_example_zoom.png =350x)
+  
+  The discontinuity at -1 in first graph correspond to ~ when ($\\mu$fs +$N_b$fb) < 0. E' stato verificato che i casi di $\\mu$ negativi sono anche ben rappresentati.
+  
+  
+  
+  
+  #### Summary provisorio
+  - ho testato che riesco ad ottenere la distribuzione di mu negativi che sembra corretta
+  - usare Fs/Fb sembra un inizio promettente, se ne possono trovare le distro molto facilmente
+  - Studiare the extended_term per trovare approx:
+    - Distro extended term (ex_term)
+    - Dipendenza of extended term on mu, plot distro ex_term for different values of mu
+    - Determinare un'approx valida per la somma di random variable di cui conosci la distro
+    - Provare con sviluppo in serie del ex_term
+  - Verificare che la distro di mu ottenuta con **"distro_mu_hat_attemp.C"** rispecchia quella ottenuta facend il fit in modo classico
+  
+  ![](/home/pan/work/XEPHYR_PKG/low_rate_asym/images/first_distro_mu.png)
+  
+  
+'''
+tags: []
+isStarred: false
+isTrashed: false
