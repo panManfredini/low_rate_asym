@@ -1,5 +1,5 @@
 createdAt: "2018-05-27T11:50:22.625Z"
-updatedAt: "2018-05-29T15:45:12.138Z"
+updatedAt: "2018-05-30T16:34:55.014Z"
 type: "MARKDOWN_NOTE"
 folder: "00ed0e13ebc5e5a7e218"
 title: "Find dirstro of $\\hat{\\mu}$"
@@ -48,6 +48,31 @@ content: '''
   - Verificare che la distro di mu ottenuta con **"distro_mu_hat_attemp.C"** rispecchia quella ottenuta facend il fit in modo classico
   
   ![](/home/pan/work/XEPHYR_PKG/low_rate_asym/images/first_distro_mu.png)
+  
+  ### Taylor expansion
+  One can try to tailor expand the extended term in $\\mu = \\mu_{true}$ in this particolar case below I tried with $\\mu_{true} = 0$. We start noting that one can use the fraction $f_s / f_b = x$ as a random variable of which is easy to get the distro under any hypothesis just using histograms.
+  $$
+  \\sum_i^{N_{obs}} \\frac{\\big( f_s - f_b \\big)N_b}{\\mu f_s +N_b f_b} = \\sum_i^{N_{obs}} \\frac{(x_i-1)N_b}{\\mu x_i + N_b}
+  $$
+  now let's call:
+  $$
+  y = \\frac{(x-1)N_b}{\\mu x + N_b}
+  $$
+  This function is interesting, x is defined positive and:
+  ![](/home/pan/work/XEPHYR_PKG/low_rate_asym/images/extended_term.png =500x)
+  I tryed to expand the function y in teylor series to try to factoraze the dependency on mu, the one gets:
+  $$
+  y  = \\sum_k^{inf}  \\frac{(-1)^kx^k(x-1)}{N_b^k} \\mu^k
+  $$
+  then one can move the sum the sum on $N_{obs}$ inside the taylor expansion and defining the symbol $f$ for brevity:
+  $$
+  f = \\sum_i^{N_{obs}} x_i ;  ~ ~~ ~f^2= \\sum_i^{N_{obs}} x_i^2 ~ .....~ ~ ~ f^k = \\sum_i^{N_{obs}} x_i^k
+  $$
+  then the formula can be expressed factorizing the $\\mu$ component as:
+  $$
+  N_{obs} - \\mu - N_b + \\sum_k^{inf} (-\\mu)^k \\frac{(f^{k+1} - f^k)}{N_b} =0
+  $$
+  is very easy to compute the distros of the $f^k$ so this would be great if one could stop at let's say the first or second term of expansion, but seems like even up to the fifth term I could not get a reasonable $\\mu$ distribution...
   
   
 '''

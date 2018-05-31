@@ -9,7 +9,7 @@ double compute_extended_term( double mu, double *fs_fb_array, int n_obs, double 
 
 }
 
-void distro_mu_hat_attemp(){
+void exTerm_vs_mu(){
 
  // ATTEMP to compute mu_hat distribution from distro of fs/fb
  // 1) compute distro of fs/fb given bkg only hypo
@@ -60,81 +60,46 @@ void distro_mu_hat_attemp(){
  	double fs_fb[1000] = {0.};
 	TRandom3 rambo;
 	TH1F *mu_distro =  new TH1F("mu_distro","",100, -100.,20.);
-	TH1F *ex_term_distro =  new TH1F("ex_term_distro","",200, -1000.,1000.);
+	vector <TH1F*> ex_term_distro;
+	unsigned int n_mu_val = 20;
+        for(unsigned int k=0 ; k < n_mu_val; k++) { 
+		ex_term_distro.push_back( new TH1F("ex_term_distro"+TString::Itoa(k,10),"",200, -1000.,1000.) );
+		ex_term_distro[k]->SetLineWidth(4);
+	}
 	
 	//loop over datasets
-	for(int i=0; i< 1000; i++){
+	for(int i=0; i< 10000; i++){
 
-		double N_obs = rambo.Poisson(Nb);	
- 		double fs_fb_sum = 0.;
- 		double fs_fb_sum_2 = 0.;
- 		double fs_fb_sum_3 = 0.;
- 		double fs_fb_sum_4 = 0.;
- 		double fs_fb_sum_5 = 0.;
+		int N_obs = 200.; //rambo.Poisson(Nb);	
 	
 		// compute N_obs array of fs/fb
 		for(int j=0; j < N_obs; j++){
 			fs_fb[j] = pdf_of_ratio->GetRandom();
-			//cout << "random fs/fb " << fs_fb[j] << endl;
-			fs_fb_sum += fs_fb[j];
-			fs_fb_sum_2 += fs_fb[j] * fs_fb[j] ;
-			fs_fb_sum_3 += fs_fb[j] * fs_fb[j] * fs_fb[j];
-			fs_fb_sum_4 += fs_fb[j] * fs_fb[j] * fs_fb[j] *fs_fb[j];
-			fs_fb_sum_5 += fs_fb[j] * fs_fb[j] * fs_fb[j] * fs_fb[j] * fs_fb[j];
-
 		}
 
 
-		TGraph zero_finder(1);
-
 		// loop on mu
-		double mu = 20.;
-		double step = 0.1;
+		double mu = 10.;
+		double step = 1;
 
-	//	bool isPositive = (mu*mu*mu*mu*(fs_fb_sum_5 - fs_fb_sum_4) / Nb/Nb/Nb/Nb - mu*mu*mu*(fs_fb_sum_4 - fs_fb_sum_3) /Nb/Nb/Nb
-	//			+ mu*mu*(fs_fb_sum_3 - fs_fb_sum_2) / Nb / Nb -mu*(1. +  (fs_fb_sum_2 - fs_fb_sum) / Nb) + fs_fb_sum -Nb) > 0; 
-		bool isPositive = (N_obs -mu -Nb  + compute_extended_term( mu, fs_fb, N_obs, Nb) ) > 0 ;
-
-		ex_term_distro->Fill(compute_extended_term( mu, fs_fb, N_obs, Nb));
- // loop to find zeros
- 		for(int j=0; j < 2000; j++){
+ 		for(unsigned int j=0; j < n_mu_val; j++){
 			
-			 double ex_term = compute_extended_term( mu, fs_fb, N_obs, Nb);
-			 double current_f = N_obs -mu -Nb  + ex_term ;
-			//double current_f = mu*mu*(fs_fb_sum_3 - fs_fb_sum_2) / Nb / Nb -mu*(1. +  (fs_fb_sum_2 - fs_fb_sum) / Nb) + fs_fb_sum -Nb;
-			//double current_f = (mu*mu*mu*mu*(fs_fb_sum_5 - fs_fb_sum_4) / Nb/Nb/Nb/Nb - mu*mu*mu*(fs_fb_sum_4 - fs_fb_sum_3) /Nb/Nb/Nb
-			//	+ mu*mu*(fs_fb_sum_3 - fs_fb_sum_2) / Nb / Nb -mu*(1. +  (fs_fb_sum_2 - fs_fb_sum) / Nb) + fs_fb_sum -Nb) ; 
-			
-			//cout << "mu " << mu << "  ex_term " << ex_term << " current_f " << current_f << endl;
-
-			zero_finder.SetPoint(j, current_f, mu);
-			// find when flip sign
-			if(isPositive && current_f < 0. ) break;
-			else if(!isPositive && current_f > 0.) break;
+	         	double ex_term = compute_extended_term( mu, fs_fb, N_obs, Nb);
+			ex_term_distro[j]->Fill(ex_term);
 
 			mu = mu - step;
 		}
 
-
-		double mu_hat = zero_finder.Eval(0.);
-		
-		//alternative approx way:
-		//double mu_hat = ( fs_fb_sum  -Nb ) / ( 1. + den_term/Nb ) ;
-
-		cout << "mu_hat " << mu_hat << endl;
-	//	zero_finder.Draw("A*L");
-	//	new TCanvas();
-
-
-		mu_distro->Fill(mu_hat);
 	}
-	new TCanvas();
-	mu_distro->Draw();
-	//ex_term_distro->Draw();
 
-       cout << "integral " <<	mu_distro->Integral(mu_distro->FindBin(0.), -1) << endl;
-       cout << "config:  Nb "  << Nb << endl;
+	new TCanvas();
+	ex_term_distro[0]->Draw("hist PLC");
+	ex_term_distro[5]->Draw("hist SAME PLC");
+	ex_term_distro[10]->Draw("hist same PLC ");
+	ex_term_distro[15]->Draw("hist same PLC");
+	
  //=======================================================//
 
 
 }
+
