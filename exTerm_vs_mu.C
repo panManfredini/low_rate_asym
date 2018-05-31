@@ -61,10 +61,16 @@ void exTerm_vs_mu(){
 	TRandom3 rambo;
 	TH1F *mu_distro =  new TH1F("mu_distro","",100, -100.,20.);
 	vector <TH1F*> ex_term_distro;
-	unsigned int n_mu_val = 20;
+	const unsigned int n_mu_val = 20;
+	double mu = 10.;
+	double step = 1;
+	double mu_values[n_mu_val];
+
         for(unsigned int k=0 ; k < n_mu_val; k++) { 
-		ex_term_distro.push_back( new TH1F("ex_term_distro"+TString::Itoa(k,10),"",200, -1000.,1000.) );
+		mu_values[k] = mu;
+		ex_term_distro.push_back( new TH1F("ex_term_distro"+TString::Itoa(k,10),TString::Format("mu = %1.1f",mu),200, -1000.,1000.) );
 		ex_term_distro[k]->SetLineWidth(4);
+		mu = mu - step;
 	}
 	
 	//loop over datasets
@@ -79,15 +85,11 @@ void exTerm_vs_mu(){
 
 
 		// loop on mu
-		double mu = 10.;
-		double step = 1;
 
  		for(unsigned int j=0; j < n_mu_val; j++){
-			
-	         	double ex_term = compute_extended_term( mu, fs_fb, N_obs, Nb);
+	         	double ex_term = compute_extended_term( mu_values[j], fs_fb, N_obs, Nb);
 			ex_term_distro[j]->Fill(ex_term);
 
-			mu = mu - step;
 		}
 
 	}
@@ -97,7 +99,8 @@ void exTerm_vs_mu(){
 	ex_term_distro[5]->Draw("hist SAME PLC");
 	ex_term_distro[10]->Draw("hist same PLC ");
 	ex_term_distro[15]->Draw("hist same PLC");
-	
+
+	   gPad->BuildLegend();	
  //=======================================================//
 
 
