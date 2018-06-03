@@ -54,6 +54,7 @@ void exTerm_vs_mu(){
 	pdf_of_ratio->Draw();
 	cout << "Integral : " << pdf_of_ratio->Integral() << endl;
 	pdf_of_ratio->Scale(1./pdf_of_ratio->Integral());  // rescale in order to have integral 1, we miss some entries...
+	cout << "Integral X > 100 = " << pdf_of_ratio->Integral(pdf_of_ratio->FindBin(100), -1) << endl;
 
  
  //==================== PART 2 ===========================//
