@@ -59,11 +59,12 @@ void distro_mu_hat_attemp(){
  //==================== PART 2 ===========================//
  	double fs_fb[1000] = {0.};
 	TRandom3 rambo;
-	TH1F *mu_distro =  new TH1F("mu_distro","",100, -100.,20.);
+	rambo.SetSeed(7);
+	TH1F *mu_distro =  new TH1F("mu_distro","",100, -19.,10.);
 	TH1F *ex_term_distro =  new TH1F("ex_term_distro","",200, -1000.,1000.);
 	
 	//loop over datasets
-	for(int i=0; i< 1000; i++){
+	for(int i=0; i< 5000; i++){
 
 		double N_obs = rambo.Poisson(Nb);	
  		double fs_fb_sum = 0.;

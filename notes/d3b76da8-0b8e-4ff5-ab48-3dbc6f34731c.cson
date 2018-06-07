@@ -1,5 +1,5 @@
 createdAt: "2018-05-27T11:50:22.625Z"
-updatedAt: "2018-06-03T14:23:51.601Z"
+updatedAt: "2018-06-03T15:03:22.162Z"
 type: "MARKDOWN_NOTE"
 folder: "00ed0e13ebc5e5a7e218"
 title: "Find dirstro of $\\hat{\\mu}$"
@@ -62,8 +62,8 @@ content: '''
   $$
   is very easy to compute the distros of the $f^k$ so this would be great if one could stop at let's say the first or second term of expansion, but seems like even up to the fifth term I could not get a reasonable $\\mu$ distribution...
   
-  ![](/:storage/images/extended_term_approx_05.png =400x)![](/:storage/images/extended_term_approx_1.png =400x)
-  ![](/:storage/images/extended_term_approx_2.png =400x)![](/:storage/images/extended_term_approx_3.png =400x)
+  ![](/:storage/images/extended_term_approx_05.png =600x)![](/:storage/images/extended_term_approx_1.png =600x)
+  ![](/:storage/images/extended_term_approx_2.png =600x)![](/:storage/images/extended_term_approx_3.png =600x)
   This is trying to approximate the extended term for mu = 0.5, 1, 2, 3 respectively in the picture above.
   The code for running the approximation is in **XEPHYR_PKG/low_rate_asym/ex_term_approx_attemp.C**
   
